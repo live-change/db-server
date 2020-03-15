@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const path = require('path')
-
+const fs = require('fs')
+const service = require ("os-service")
 const Server = require('../lib/Server.js')
 
 function serverOptions(yargs) {
@@ -16,16 +17,24 @@ function serverOptions(yargs) {
   })
 }
 
-function storeOptions(yargs) {
+function storeOptions(yargs, defaults = {}) {
   yargs.option('dbRoot', {
     describe: 'server root directory',
     type: 'string',
-    default: '.'
+    default: defaults.dbRoot || '.'
   })
   yargs.option('backend', {
     describe: 'database backend engine ( lmdb | leveldb | rocksdb | mem )',
     type: "string",
-    default: 'lmdb'
+    default: defaults.backend || 'lmdb'
+  })
+}
+
+function serviceOptions(yargs) {
+  yargs.option('serviceName', {
+    describe: 'name of service',
+    type: 'string',
+    default: 'liveChangeDb'
   })
 }
 
@@ -36,7 +45,43 @@ const argv = require('yargs') // eslint-disable-line
     .command('serve', 'start server', (yargs) => {
       serverOptions(yargs)
       storeOptions(yargs)
-    }, (argv) => serve(argv))
+      yargs.option('service',{
+        describe: 'run as service',
+        type: 'boolean'
+      })
+    }, (argv) => {
+      if(argv.service) {
+        if(argv.verbose) {
+          console.info('running as service!')
+        }
+        service.run (function () {
+          service.stop (0);
+        })
+      }
+      serve(argv)
+    })
+    .command('install', 'install system service', (yargs) => {
+      serviceOptions(yargs)
+      serverOptions(yargs)
+      storeOptions(yargs, { dbRoot: '/var/db/liveChangeDb' })
+    }, async (argv) => {
+      const programArgs = ["serve", '--service',
+        '--port', argv.port, '--host', argv.host,
+        '--dbRoot', argv.dbRoot, '--backend', argv.backend]
+      if(argv.verbose) console.info(`creating system service ${argv.serviceName}`)
+      await fs.promises.mkdir(argv.dbRoot, {recursive:true})
+      service.add (argv.serviceName, {programArgs}, function(error){
+        if(error) console.trace(error);
+      })
+    })
+    .command('uninstall', 'remove system service', (yargs) => {
+      serviceOptions(yargs)
+    }, (argv) => {
+      if(argv.verbose) console.info(`removing system service ${argv.serviceName}`)
+      service.remove (argv.serviceName, function(error){
+        if(error) console.trace(error);
+      })
+    })
     .option('verbose', {
       alias: 'v',
       type: 'boolean',
