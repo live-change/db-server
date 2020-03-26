@@ -174,7 +174,8 @@ test("query observable", t => {
           await input.table('users').onChange((obj, oldObj) => {
             const userId = obj ? obj.id : oldObj.id
             return output.synchronized('u_'+userId, async () => {
-              const messageIds = await input.index('messagesByUser').range({ gte: userId, lt: userId + '\xFF' }).get()
+              const messageIds = await (await input.index('messagesByUser'))
+                  .range({ gte: userId, lt: userId + '\xFF' }).get()
               return Promise.all(messageIds.map(async mid => {
                 const message = await input.table('messages').object(mid.to).get()
                 if(message) await output.synchronized(message.id, async () => {
