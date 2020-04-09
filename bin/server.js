@@ -28,6 +28,11 @@ function serverOptions(yargs) {
     type: 'string',
     default: '0.0.0.0'
   })
+  yargs.option('master', {
+    describe: 'replicate from master',
+    type: 'string',
+    default: null
+  })
 }
 
 function storeOptions(yargs, defaults = {}) {
@@ -169,15 +174,16 @@ const argv = require('yargs') // eslint-disable-line
     }).argv
 
 async function create({ dbRoot, backend, verbose }) {
+  await fs.promises.mkdir(dbRoot, { recursive:true })
   if(verbose) console.info(`creating database in ${path.resolve(dbRoot)}`)
   let server = new Server({ dbRoot, backend })
   await server.initialize({ forceNew: true })
   if(verbose) console.info(`database server root directory created.`)
 }
 
-async function serve({ dbRoot, backend, verbose, host, port }) {
+async function serve({ dbRoot, backend, verbose, host, port, master }) {
   if(verbose) console.info(`starting server in ${path.resolve(dbRoot)}`)
-  let server = new Server({ dbRoot, backend })
+  let server = new Server({ dbRoot, backend, master })
   await server.initialize()
   if(verbose) console.info(`database initialized!`)
   if(verbose) console.info(`listening on: ${argv.host}:${argv.port}`)
