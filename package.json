@@ -24,10 +24,6 @@
   },
   "homepage": "https://github.com/live-change/db-server",
   "devDependencies": {
-    "@live-change/dao-websocket": "^0.2.3",
-    "@live-change/db": "^0.2.0",
-    "@live-change/db-store-level": "^0.1.6",
-    "@live-change/db-store-lmdb": "^0.1.0",
     "encoding-down": "^6.3.0",
     "level-rocksdb": "^4.0.0",
     "leveldown": "^5.4.1",
@@ -39,6 +35,10 @@
     "tape": "^4.11.0"
   },
   "dependencies": {
+    "@live-change/dao-websocket": "^0.2.3",
+    "@live-change/db": "^0.2.0",
+    "@live-change/db-store-level": "^0.1.6",
+    "@live-change/db-store-lmdb": "^0.1.0",
     "express": "^4.17.1",
     "yargs": "^15.3.0",
     "websocket": "^1.0.31",
