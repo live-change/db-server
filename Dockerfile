@@ -12,7 +12,7 @@ RUN npm install -g node-lmdb
 RUN npm install -g rocksdb
 RUN npm install -g subleveldown
 
-RUN npm install -g @live-change/db-server@0.4.8
+RUN npm install -g @live-change/db-server@0.4.9
 
 EXPOSE 9417
 
