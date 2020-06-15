@@ -7,7 +7,9 @@
     "test": "NODE_ENV=test tape tests/*.js"
   },
   "bin": {
-    "livechangedb": "./bin/server.js"
+    "livechangedb": "./bin/server.js",
+    "lcdbd": "./bin/server.js",
+    "lcdbclient": "./bin/client.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
     "level-rocksdb": "^4.0.0",
     "leveldown": "^5.6.0",
     "levelup": "^4.4.0",
+    "line-reader": "^0.4.0",
     "memdown": "^5.1.0",
     "node-lmdb": "^0.8.0",
     "rocksdb": "^4.1.0",
