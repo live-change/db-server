@@ -100,6 +100,11 @@ const argv = require('yargs') // eslint-disable-line
         if(error) console.trace(error);
       })
     })
+    .option('verbose', {
+      alias: 'v',
+      type: 'boolean',
+      description: 'Run with verbose logging'
+    }).argv
 
 async function create({ dbRoot, backend, verbose }) {
   await fs.promises.mkdir(dbRoot, { recursive:true })
