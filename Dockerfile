@@ -20,4 +20,4 @@ EXPOSE 9417
 
 RUN mkdir /data
 
-CMD livechangedb --verbose serve --dbRoot /data
+CMD lcdbd --verbose serve --dbRoot /data

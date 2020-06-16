@@ -9,7 +9,7 @@
   "bin": {
     "livechangedb": "./bin/server.js",
     "lcdbd": "./bin/server.js",
-    "lcdbclient": "./bin/client.js"
+    "lcdbc": "./bin/client.js"
   },
   "repository": {
     "type": "git",
