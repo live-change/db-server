@@ -370,7 +370,7 @@ async function exec(options) {
     })
   })
 
-  lineReader.open(file, async function(err, reader) {
+  lineReader.open(file == '-' ? process.stdin : file, async function(err, reader) {
     if (err) throw err
 
     const client = await clientPromise

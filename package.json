@@ -40,7 +40,7 @@
   "dependencies": {
     "@live-change/dao": "^0.2.9",
     "@live-change/dao-websocket": "^0.2.7",
-    "@live-change/db": "^0.3.12",
+    "@live-change/db": "^0.3.13",
     "@live-change/db-store-level": "^0.1.9",
     "@live-change/db-store-lmdb": "^0.1.8",
     "express": "^4.17.1",
