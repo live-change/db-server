@@ -37,9 +37,9 @@
     "tape": "^4.13.3"
   },
   "dependencies": {
-    "@live-change/dao": "^0.2.18",
+    "@live-change/dao": "^0.2.20",
     "@live-change/dao-websocket": "^0.2.10",
-    "@live-change/db": "^0.3.27",
+    "@live-change/db": "^0.3.29",
     "@live-change/db-store-level": "^0.1.13",
     "@live-change/db-store-lmdb": "^0.1.12",
     "express": "^4.17.1",
