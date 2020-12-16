@@ -334,7 +334,7 @@ async function dump(options) {
     for(let logName of logsList) {
       await stream(
           (from, limit) => ['database', 'logRange', db, logName, { gt: from, limit }],
-          row => req(['database', 'putLog'], targetDb, logName, row)
+          row => req(['database', 'putOldLog'], targetDb, logName, row)
       )
     }
   }
