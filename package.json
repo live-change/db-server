@@ -37,11 +37,12 @@
     "tape": "^4.13.3"
   },
   "dependencies": {
-    "@live-change/dao": "^0.2.20",
-    "@live-change/dao-websocket": "^0.2.10",
+    "@live-change/dao": "^0.2.22",
+    "@live-change/dao-sockjs": "^0.1.9",
+    "@live-change/dao-websocket": "^0.2.13",
     "@live-change/db": "^0.3.30",
     "@live-change/db-store-level": "^0.1.13",
-    "@live-change/db-store-lmdb": "^0.1.12",
+    "@live-change/db-store-lmdb": "^0.1.13",
     "express": "^4.17.1",
     "line-reader": "^0.4.0",
     "node-interval-tree": "^1.3.3",
@@ -50,7 +51,7 @@
     "rimraf-promise": "^2.0.0",
     "segfault-handler": "^1.3.0",
     "sockjs": "^0.3.21",
-    "websocket": "^1.0.32",
+    "websocket": "^1.0.33",
     "yargs": "^15.4.1"
   }
 }
