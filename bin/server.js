@@ -125,6 +125,16 @@ async function serve(argv) {
     dbRoot, backend, master,
     slowStart
   })
+
+  process.on('unhandledRejection', (reason, promise) => {
+    if(reason.stack && reason.stack.match(/\s(userCode:([a-z0-9_.\/-]+):([0-9]+):([0-9]+))\n/i)) {
+      server.handleUnhandledRejectionInQuery(reason, promise)
+    } else {
+      console.error('Unhandled Promise Rejection', (reason && reason.stack) || error, "Promise:", promise)
+      process.exit(1)
+    }
+  })
+
   await server.initialize()
   if(verbose) console.info(`database initialized!`)
   if(verbose) console.info(`listening on: ${argv.host}:${argv.port}`)
