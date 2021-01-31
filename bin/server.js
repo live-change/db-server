@@ -33,6 +33,10 @@ function serverOptions(yargs) {
     type: 'string',
     default: null
   })
+  yargs.option('slowStart', {
+    type: 'boolean',
+    description: 'start indexes one after another(better for debugging)'
+  })
 }
 
 function storeOptions(yargs, defaults = {}) {
@@ -114,9 +118,13 @@ async function create({ dbRoot, backend, verbose }) {
   if(verbose) console.info(`database server root directory created.`)
 }
 
-async function serve({ dbRoot, backend, verbose, host, port, master }) {
+async function serve(argv) {
+  const { dbRoot, backend, verbose, host, port, master, slowStart } = argv
   if(verbose) console.info(`starting server in ${path.resolve(dbRoot)}`)
-  let server = new Server({ dbRoot, backend, master })
+  let server = new Server({
+    dbRoot, backend, master,
+    slowStart
+  })
   await server.initialize()
   if(verbose) console.info(`database initialized!`)
   if(verbose) console.info(`listening on: ${argv.host}:${argv.port}`)

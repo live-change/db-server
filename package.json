@@ -40,7 +40,7 @@
     "@live-change/dao": "^0.2.22",
     "@live-change/dao-sockjs": "^0.1.9",
     "@live-change/dao-websocket": "^0.2.13",
-    "@live-change/db": "^0.3.37",
+    "@live-change/db": "^0.3.38",
     "@live-change/db-store-level": "^0.1.13",
     "@live-change/db-store-lmdb": "^0.1.15",
     "express": "^4.17.1",
