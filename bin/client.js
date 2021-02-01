@@ -303,6 +303,16 @@ async function dump(options) {
     }
     if(dumpAll) {
       sync()
+  /*    let createdIndexes = []
+      let moreIndexes = Object.keys(databaseConfig.indexes)
+      while(moreIndexes.length > 0) {
+        for(const indexName of moreIndexes) {
+          const conf = databaseConfig.indexes[indexName]
+          for(const source of conf.sources || []) {
+            //if(source.type)
+          }
+        }
+      }*/
       for(let indexName in databaseConfig.indexes) {
         const conf = databaseConfig.indexes[indexName]
         req(['database', 'createIndex'], targetDb, indexName, conf.code, conf.parameters,
