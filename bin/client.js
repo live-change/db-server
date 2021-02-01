@@ -310,7 +310,7 @@ async function dump(options) {
         for(const indexName of moreIndexes) {
           const conf = databaseConfig.indexes[indexName]
           let wait = false
-          console.error("INDEX", indexName, "SOURCES", conf)
+          console.error("INDEX", indexName, "SOURCES", conf.sources)
           for(const source of conf.sources || []) {
             if(source.type == 'index' && !indexesCreatedBefore.includes(source.name)) {
               wait = true
