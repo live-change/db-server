@@ -270,10 +270,10 @@ async function dump(options) {
   const client = await clientPromise
 
   function req(method, ...args) {
-    console.log(JSON.stringify({ type: 'request', method, parameters: args }))
+    //console.log(JSON.stringify({ type: 'request', method, parameters: args }))
   }
   function sync() {
-    console.log(JSON.stringify({ type: 'sync' }))
+    //console.log(JSON.stringify({ type: 'sync' }))
   }
 
   let tablesList = tables || [], logsList = logs || []
@@ -302,22 +302,34 @@ async function dump(options) {
       req(['database', 'createLog'], targetDb, logName, databaseConfig.logs[logName])
     }
     if(dumpAll) {
-      sync()
-  /*    let createdIndexes = []
+      let indexesCreatedBefore = []
+      let indexesCreatedNow = []
       let moreIndexes = Object.keys(databaseConfig.indexes)
       while(moreIndexes.length > 0) {
+        sync()
         for(const indexName of moreIndexes) {
           const conf = databaseConfig.indexes[indexName]
+          let wait = false
+          console.error("INDEX", indexName, "SOURCES", conf)
           for(const source of conf.sources || []) {
-            //if(source.type)
+            if(source.type == 'index' && !indexesCreatedBefore.includes(source.name)) {
+              wait = true
+            }
           }
+          if(wait) continue
+          req(['database', 'createIndex'], targetDb, indexName, conf.code, conf.parameters,
+              { ...conf, code: undefined, parameters: undefined })
+          indexesCreatedNow.push(indexName)
         }
-      }*/
-      for(let indexName in databaseConfig.indexes) {
+        moreIndexes = moreIndexes.filter(ind => !indexesCreatedNow.includes(ind))
+        indexesCreatedBefore = indexesCreatedBefore.concat(indexesCreatedNow)
+        indexesCreatedNow = []
+      }
+/*      for(let indexName in databaseConfig.indexes) {
         const conf = databaseConfig.indexes[indexName]
         req(['database', 'createIndex'], targetDb, indexName, conf.code, conf.parameters,
             { ...conf, code: undefined, parameters: undefined })
-      }
+      }*/
     }
     sync()
   }
