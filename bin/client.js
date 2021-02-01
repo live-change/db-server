@@ -270,10 +270,10 @@ async function dump(options) {
   const client = await clientPromise
 
   function req(method, ...args) {
-    //console.log(JSON.stringify({ type: 'request', method, parameters: args }))
+    console.log(JSON.stringify({ type: 'request', method, parameters: args }))
   }
   function sync() {
-    //console.log(JSON.stringify({ type: 'sync' }))
+    console.log(JSON.stringify({ type: 'sync' }))
   }
 
   let tablesList = tables || [], logsList = logs || []
@@ -305,15 +305,21 @@ async function dump(options) {
       let indexesCreatedBefore = []
       let indexesCreatedNow = []
       let moreIndexes = Object.keys(databaseConfig.indexes)
+      let phase = 0
       while(moreIndexes.length > 0) {
+        //console.error("PHASE", ++phase, "INDEXES", moreIndexes.length)
         sync()
         for(const indexName of moreIndexes) {
           const conf = databaseConfig.indexes[indexName]
           let wait = false
-          console.error("INDEX", indexName, "SOURCES", conf.sources)
+          //console.error("INDEX", indexName, "SOURCES", conf.sources)
           for(const source of conf.sources || []) {
-            if(source.type == 'index' && !indexesCreatedBefore.includes(source.name)) {
-              wait = true
+            if(source.type == 'index') {
+              //console.error("INDEX", indexName, "HAS INDEX SOURCE", source.name)
+              if(!indexesCreatedBefore.includes(source.name)) {
+                //console.error("WE WILL WAIT FOR THAT INDEX")
+                wait = true
+              }
             }
           }
           if(wait) continue
