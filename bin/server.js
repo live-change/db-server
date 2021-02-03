@@ -131,7 +131,7 @@ async function serve(argv) {
       server.handleUnhandledRejectionInQuery(reason, promise)
     } else {
       console.error('Unhandled Promise Rejection', (reason && reason.stack) || error, "Promise:", promise)
-      process.exit(1)
+      //process.exit(1) // TODO: database should not fail because of it, but it should be logged somewhere
     }
   })
 
