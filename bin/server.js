@@ -6,6 +6,9 @@ const SegfaultHandler = require('segfault-handler')
 const Server = require('../lib/Server.js')
 const { client: WSClient } = require("@live-change/dao-websocket")
 const ReactiveDao = require('@live-change/dao')
+const db = require("@live-change/db")
+const profileOutput = require("../lib/profileOutput.js")
+const { performance } = require('perf_hooks')
 
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
@@ -36,6 +39,10 @@ function serverOptions(yargs) {
   yargs.option('slowStart', {
     type: 'boolean',
     description: 'start indexes one after another(better for debugging)'
+  })
+  yargs.option('profileLog', {
+    type: 'string',
+    description: 'profiling log file path'
   })
 }
 
@@ -119,7 +126,12 @@ async function create({ dbRoot, backend, verbose }) {
 }
 
 async function serve(argv) {
-  const { dbRoot, backend, verbose, host, port, master, slowStart } = argv
+  const { dbRoot, backend, verbose, host, port, master, slowStart, profileLog } = argv
+  if(profileLog) {
+    const out = profileOutput(profileLog)
+    await db.profileLog.startLog(out, performance)
+  }
+  const profileOp = await db.profileLog.begin({ operation: "startingDbServer", ...argv })
   if(verbose) console.info(`starting server in ${path.resolve(dbRoot)}`)
   let server = new Server({
     dbRoot, backend, master,
@@ -140,4 +152,5 @@ async function serve(argv) {
   if(verbose) console.info(`listening on: ${argv.host}:${argv.port}`)
   server.listen(port, host)
   if(verbose) console.info(`server started!`)
+  await db.profileLog.end(profileOp)
 }
