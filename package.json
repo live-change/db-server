@@ -8,8 +8,7 @@
   },
   "bin": {
     "livechangedb": "./bin/server.js",
-    "lcdbd": "./bin/server.js",
-    "lcdbc": "node_modules/@live-change/db-client/bin/client.js"
+    "lcdbd": "./bin/server.js"
   },
   "repository": {
     "type": "git",
