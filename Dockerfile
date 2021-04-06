@@ -13,7 +13,7 @@ RUN npm install -g rocksdb
 RUN npm install -g subleveldown
 
 COPY package.json .
-RUN npm install -g @live-change/db-server@`echo "console.log(require('./package.json').version)" | node`
+RUN npm install -g @live-change/db-server-2@`echo "console.log(require('./package.json').version)" | node`
 RUN rm package.json
 
 EXPOSE 9417
