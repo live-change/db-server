@@ -57,6 +57,10 @@ function storeOptions(yargs, defaults = {}) {
     type: "string",
     default: defaults.backend || 'lmdb'
   })
+  yargs.option('backendUrl', {
+    describe: 'remote database backend address',
+    type: "string"
+  })
 }
 
 function serviceOptions(yargs) {
@@ -126,7 +130,7 @@ async function create({ dbRoot, backend, verbose }) {
 }
 
 async function serve(argv) {
-  const { dbRoot, backend, verbose, host, port, master, slowStart, profileLog } = argv
+  const { dbRoot, backend, backendUrl, verbose, host, port, master, slowStart, profileLog } = argv
   if(profileLog) {
     const out = profileOutput(profileLog)
     await db.profileLog.startLog(out, performance)
@@ -134,7 +138,7 @@ async function serve(argv) {
   const profileOp = await db.profileLog.begin({ operation: "startingDbServer", ...argv })
   if(verbose) console.info(`starting server in ${path.resolve(dbRoot)}`)
   let server = new Server({
-    dbRoot, backend, master,
+    dbRoot, backend, backendUrl, master,
     slowStart
   })
 
@@ -142,7 +146,7 @@ async function serve(argv) {
     if(reason.stack && reason.stack.match(/\s(userCode:([a-z0-9_.\/-]+):([0-9]+):([0-9]+))\n/i)) {
       server.handleUnhandledRejectionInQuery(reason, promise)
     } else {
-      console.error('Unhandled Promise Rejection', (reason && reason.stack) || error, "Promise:", promise)
+      console.error('Unhandled Promise Rejection', (reason && reason.stack) || reason, "Promise:", promise)
       //process.exit(1) // TODO: database should not fail because of it, but it should be logged somewhere
     }
   })
