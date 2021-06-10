@@ -53,7 +53,7 @@ function storeOptions(yargs, defaults = {}) {
     default: defaults.dbRoot || '.'
   })
   yargs.option('backend', {
-    describe: 'database backend engine ( lmdb | leveldb | rocksdb | mem )',
+    describe: 'database backend engine ( lmdb | leveldb | rocksdb | memdown | mem )',
     type: "string",
     default: defaults.backend || 'lmdb'
   })
