@@ -30,7 +30,7 @@
     "leveldown": "^6.0.0",
     "levelup": "^5.0.1",
     "memdown": "^6.0.0",
-    "node-lmdb": "^0.8.0",
+    "node-lmdb": "^0.9.7",
     "subleveldown": "^5.0.1",
     "tape": "^5.2.2"
   },
